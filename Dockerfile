@@ -19,7 +19,8 @@ RUN wget https://www.rcdevs.com/repos/debian/rcdevs-release_1.0.0-0_all.deb \
 RUN cp -r --preserve=all /opt/waproxy/conf /opt/waproxy/.conf 
 
 # Create symlinks for the .setup file from the temp folder to the config folder that should be persisted 
-RUN ln -s /opt/waproxy/conf/.setup /opt/waproxy/temp/.setup
+RUN ln -s /opt/waproxy/conf/.setup /opt/waproxy/temp/.setup \
+	&& ln -s /opt/waproxy/conf/.srvhost /opt/waproxy/temp/.srvhost
 
 ADD ./start.sh /
 CMD /start.sh

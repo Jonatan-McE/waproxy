@@ -5,16 +5,19 @@ if [ ! "$(ls -A /opt/waproxy/conf/)" ]; then
   cp -r --preserve=all /opt/waproxy/.conf/* /opt/waproxy/conf/
 fi
 if [ ! -f /opt/waproxy/temp/.setup ]; then
-    if [ ! -z "$WEBADM_IP" ] && [ ! -z "$WAPROXY_URL" ]; then
-        echo "-- Checking if WebADM setup is complete before continuing --"
-        while [[ ! `wget --no-check-certificate --no-cookies --timeout=5 --delete -S https://$WEBADM_IP/cacert/ 2>&1 | grep 'HTTP/1.1 200'` ]]; do
-            sleep 5
-        done
-        printf "$WAPROXY_URL\n$WEBADM_IP\n\ny\ny\n" | /opt/waproxy/bin/setup
-    else
-        echo "Missing enviroment variables (WAPROXY_URL or WEBADM_IP)"
+    if [ -z "$WEBADM_IP" ]; then
+        echo "Missing WEBADM_IP environment variable"
         exit 1
     fi
+    if [ -z "$WAPROXY_URL" ]; then
+        echo "Missing WAPROXY_URL environment variable"
+        exit 1
+    fi
+    echo "-- Checking if WebADM is ready --"
+    while [[ ! `wget --no-check-certificate --no-cookies --timeout=5 --delete -S https://$WEBADM_IP/cacert/ 2>&1 | grep 'HTTP/1.1 200'` ]]; do
+        sleep 5
+    done
+    printf "$WAPROXY_URL\n$WEBADM_IP\n\ny\ny\n" | /opt/waproxy/bin/setup
 fi
 /opt/waproxy/bin/waproxy start
 status=$?
