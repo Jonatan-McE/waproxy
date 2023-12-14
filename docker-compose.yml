@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  waproxy:
+    image: waproxy
+    build: ./build
+    container_name: waproxy
+    hostname: nix-srv06-waproxy
+    restart: unless-stopped
+    environment:
+      - WEBADM_IP=10.0.0.2
+      - WAPROXY_URL=login.example.com
+    volumes:
+      - waproxy_conf:/opt/waproxy/conf
+    ports:
+      - 80:80
+      - 443:443
+
+volumes:
+  waproxy_conf:

@@ -8,9 +8,9 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install Rcdev WebADM and OpenOTP
-RUN wget https://www.rcdevs.com/repos/debian/rcdevs-release_1.0.0-0_all.deb \ 
-	&& apt-get install ./rcdevs-release_1.0.0-0_all.deb \
-	&& rm ./rcdevs-release_1.0.0-0_all.deb \
+RUN wget https://repos.rcdevs.com/debian/rcdevs-release_1.1.0-1_all.deb \ 
+	&& apt-get install ./rcdevs-release_1.1.0-1_all.deb \
+	&& rm ./rcdevs-release_1.1.0-1_all.deb \
 	&& apt-get update \
 	&& apt-get install waproxy -y \
 	&& rm -rf /var/lib/apt/lists/* 
